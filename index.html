@@ -9,7 +9,7 @@
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [["$", "$"], ["\\(", "\\)"]],
+                inlineMath: [["$", "$"], ["\\(", "\\)"], ["[math]", "[/math]"]],
                 displayMath: [["$$", "$$"], ["\\[", "\\]"]],
                 processEscapes: true,
                 processEnvironments: true
@@ -20,7 +20,7 @@
         };
     </script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -33,8 +33,8 @@
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 9998;
-            opacity: 0.08;
-            font-size: 24px;
+            opacity: 0.06;
+            font-size: 22px;
             font-weight: bold;
             color: #fff;
             display: flex;
@@ -43,12 +43,12 @@
             justify-content: space-around;
             overflow: hidden;
         }
-        .watermark span { transform: rotate(-30deg); white-space: nowrap; margin: 40px; }
+        .watermark span { transform: rotate(-30deg); white-space: nowrap; margin: 50px; }
         #security-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.97);
             z-index: 10000;
             justify-content: center;
             align-items: center;
@@ -186,7 +186,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -225,19 +225,20 @@
             opacity: 0;
             pointer-events: none;
             z-index: 9997;
-            transition: opacity 0.1s;
+            transition: opacity 0.05s;
         }
         .violation-count {
             position: fixed;
             top: 80px;
             right: 20px;
-            background: rgba(231, 76, 60, 0.9);
+            background: rgba(231, 76, 60, 0.95);
             color: white;
             padding: 10px 20px;
             border-radius: 8px;
             font-weight: bold;
             z-index: 101;
             display: none;
+            box-shadow: 0 4px 15px rgba(231,76,60,0.4);
         }
         .violation-count.active { display: block; }
         .type-badge {
@@ -250,13 +251,26 @@
         }
         .type-pg { background: #3498db; }
         .type-isian { background: #9b59b6; }
+        #lock-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        #lock-screen.active { display: flex; }
+        #lock-screen h1 { color: #e74c3c; font-size: 36px; margin-bottom: 20px; }
+        #lock-screen p { color: #bdc3c7; font-size: 18px; }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="watermark" id="watermark"></div>
     <div class="flash-overlay" id="flash-overlay"></div>
-    <div class="violation-count" id="violation-count">Pelanggaran: 0/2</div>
+    <div class="violation-count" id="violation-count">Pelanggaran: 0/3</div>
 
     <div id="access-denied">
         <h1 style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">&#9888; Akses Ditolak</h1>
@@ -271,9 +285,14 @@
 
     <div id="security-overlay">
         <h2>&#9888; Pelanggaran Keamanan Terdeteksi!</h2>
-        <p id="security-msg">Anda melakukan pelanggaran. Ujian akan dikunci setelah 2 kali pelanggaran.</p>
-        <p id="security-count">Pelanggaran: <span id="v-count">0</span>/2</p>
+        <p id="security-msg">Anda melakukan pelanggaran. Ujian akan dikunci setelah 3 kali pelanggaran.</p>
+        <p id="security-count">Pelanggaran: <span id="v-count">0</span>/3</p>
         <button class="btn" id="security-btn" onclick="dismissSecurity()">Saya Mengerti</button>
+    </div>
+
+    <div id="lock-screen">
+        <h1>&#128274; Ujian Dikunci</h1>
+        <p>Anda telah melanggar aturan keamanan sebanyak 3 kali.<br>Ujian tidak dapat dilanjutkan.</p>
     </div>
 
     <div id="result-modal">
@@ -307,7 +326,7 @@
 
     // ==================== KONFIGURASI ====================
     const EXAM_DURATION = 7200;
-    const MAX_VIOLATIONS = 2;
+    const MAX_VIOLATIONS = 3;
     const TOKEN_EXPIRY = 5 * 60 * 1000;
 
     // ==================== DATABASE SOAL (TERBARU) ====================
@@ -456,6 +475,7 @@
     let examSubmitted = false;
     let userName = "";
     let tokenValid = false;
+    let isLocked = false;
 
     // ==================== TOKEN VALIDATION ====================
     function validateToken() {
@@ -541,6 +561,7 @@
     }
 
     function loadQuestion(idx) {
+        if (isLocked) return;
         currentQ = idx;
         const q = questions[idx];
         const container = document.getElementById("question-container");
@@ -565,7 +586,7 @@
             const val = answers[q.id] || "";
             html += "<input type=\"text\" class=\"input-answer\" id=\"input-" + q.id + "\" ";
             html += "value=\"" + val + "\" placeholder=\"Ketik jawaban Anda...\" ";
-            html += "oninput=\"saveInput(" + q.id + ", this.value)\">";
+            html += "oninput=\"saveInput(" + q.id + ", this.value)\" autocomplete=\"off\">";
         }
 
         html += "<button class=\"flag-btn " + (flagged.has(q.id) ? "flagged" : "") + "\" ";
@@ -589,6 +610,7 @@
     }
 
     function selectOption(optIdx) {
+        if (isLocked) return;
         const q = questions[currentQ];
         answers[q.id] = optIdx;
         loadQuestion(currentQ);
@@ -596,6 +618,7 @@
     }
 
     function saveInput(qid, value) {
+        if (isLocked) return;
         answers[qid] = value.trim();
         updateNavAnswered(qid);
     }
@@ -613,6 +636,7 @@
     }
 
     function toggleFlag(qid) {
+        if (isLocked) return;
         if (flagged.has(qid)) flagged.delete(qid);
         else flagged.add(qid);
         loadQuestion(currentQ);
@@ -620,11 +644,11 @@
     }
 
     function prevQuestion() {
-        if (currentQ > 0) loadQuestion(currentQ - 1);
+        if (currentQ > 0 && !isLocked) loadQuestion(currentQ - 1);
     }
 
     function nextQuestion() {
-        if (currentQ < questions.length - 1) loadQuestion(currentQ + 1);
+        if (currentQ < questions.length - 1 && !isLocked) loadQuestion(currentQ + 1);
     }
 
     // ==================== TIMER ====================
@@ -653,7 +677,7 @@
 
     // ==================== SUBMIT ====================
     function submitExam(auto = false) {
-        if (examSubmitted) return;
+        if (examSubmitted || isLocked) return;
         if (!auto && !confirm("Yakin ingin mengumpulkan jawaban?")) return;
 
         examSubmitted = true;
@@ -712,66 +736,157 @@
     function dismissSecurity() {
         document.getElementById("security-overlay").classList.remove("active");
         if (violations >= MAX_VIOLATIONS) {
-            submitExam(true);
+            lockExam();
         }
+    }
+
+    function lockExam() {
+        isLocked = true;
+        examSubmitted = true;
+        clearInterval(timerInterval);
+        document.getElementById("security-overlay").classList.remove("active");
+        document.getElementById("lock-screen").classList.add("active");
+        document.getElementById("main-content").style.display = "none";
+        document.getElementById("main-header").style.display = "none";
     }
 
     // ==================== SECURITY ====================
     function initSecurity() {
+        // Block all mouse right click
         document.addEventListener("contextmenu", e => {
             e.preventDefault();
+            e.stopPropagation();
             addViolation("Klik kanan (Right Click)");
+            return false;
+        }, true);
+
+        // Block selection start
+        document.addEventListener("selectstart", e => {
+            e.preventDefault();
+            return false;
         });
 
+        // Block drag
+        document.addEventListener("dragstart", e => {
+            e.preventDefault();
+            return false;
+        });
+
+        // Block copy/cut/paste
         document.addEventListener("copy", e => {
             e.preventDefault();
+            e.stopPropagation();
             addViolation("Copy (Ctrl+C)");
-        });
-        document.addEventListener("paste", e => {
-            e.preventDefault();
-            addViolation("Paste (Ctrl+V)");
-        });
+            return false;
+        }, true);
         document.addEventListener("cut", e => {
             e.preventDefault();
+            e.stopPropagation();
             addViolation("Cut (Ctrl+X)");
-        });
+            return false;
+        }, true);
+        document.addEventListener("paste", e => {
+            e.preventDefault();
+            e.stopPropagation();
+            addViolation("Paste (Ctrl+V)");
+            return false;
+        }, true);
 
+        // Block all keyboard shortcuts
         document.addEventListener("keydown", e => {
             const key = e.key.toLowerCase();
             const ctrl = e.ctrlKey || e.metaKey;
+            const alt = e.altKey;
+            const shift = e.shiftKey;
 
-            if (key === "printscreen" || key === "snapshot") {
+            // Block PrintScreen
+            if (key === "printscreen" || key === "snapshot" || key === "print") {
                 e.preventDefault();
+                e.stopPropagation();
                 addViolation("PrintScreen");
-                navigator.clipboard.writeText("").catch(()=>{});
+                try { navigator.clipboard.writeText(""); } catch(e) {}
+                return false;
             }
 
+            // Block all Ctrl/Meta combinations
             if (ctrl) {
-                const blocked = ["c", "v", "x", "p", "s", "a", "u"];
+                const blocked = ["c", "v", "x", "p", "s", "a", "u", "f", "g", "h", "j", "n", "o", "t", "w", "r", "e", "d", "z", "y", "k", "l", "b", "i"];
                 if (blocked.includes(key)) {
                     e.preventDefault();
+                    e.stopPropagation();
                     addViolation("Ctrl+" + key.toUpperCase());
-                }
-                if (key === "shift" && (e.key === "i" || e.key === "j" || e.key === "c")) {
-                    e.preventDefault();
-                    addViolation("DevTools shortcut");
+                    return false;
                 }
             }
 
-            if (key === "f12") {
+            // Block Alt combinations (tab switching prevention)
+            if (alt) {
                 e.preventDefault();
-                addViolation("F12 (DevTools)");
+                e.stopPropagation();
+                addViolation("Alt+" + key.toUpperCase());
+                return false;
+            }
+
+            // Block Shift+Ctrl+I/J/C (DevTools)
+            if (ctrl && shift) {
+                if (["i", "j", "c", "k", "m"].includes(key)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addViolation("DevTools shortcut (Ctrl+Shift+" + key.toUpperCase() + ")");
+                    return false;
+                }
+            }
+
+            // Block F keys
+            const fKeys = ["f1","f2","f3","f4","f5","f6","f7","f8","f9","f10","f11","f12"];
+            if (fKeys.includes(key)) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (key === "f12") addViolation("F12 (DevTools)");
+                return false;
+            }
+
+            // Block Escape (could exit fullscreen)
+            if (key === "escape") {
+                e.preventDefault();
+                e.stopPropagation();
+                addViolation("Tombol Escape");
+                return false;
+            }
+
+            // Block Tab (could navigate away)
+            if (key === "tab") {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        }, true);
+
+        // Prevent text selection via mouse
+        document.addEventListener("mousedown", e => {
+            if (e.detail > 1) {
+                e.preventDefault();
+                return false;
             }
         });
 
+        // Blur detection - tab switching
         let blurCount = 0;
         window.addEventListener("blur", () => {
             blurCount++;
-            if (blurCount > 1) {
-                addViolation("Pindah tab/jendela (Alt+Tab)");
+            if (blurCount > 0 && !examSubmitted) {
+                addViolation("Pindah tab/jendela (Alt+Tab/Click Outside)");
             }
         });
 
+        // Visibility API - detect tab switch/minimize
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden && !examSubmitted) {
+                addViolation("Tab tidak aktif / Minimize");
+            }
+        });
+
+        // Before unload warning
         window.addEventListener("beforeunload", e => {
             if (!examSubmitted) {
                 e.preventDefault();
@@ -780,52 +895,92 @@
             }
         });
 
+        // Enforce fullscreen
         function enforceFullscreen() {
-            if (!document.fullscreenElement && !examSubmitted) {
+            if (!document.fullscreenElement && !examSubmitted && !isLocked) {
                 try {
                     document.documentElement.requestFullscreen();
                 } catch(e) {}
             }
         }
+        
         document.addEventListener("fullscreenchange", () => {
-            if (!document.fullscreenElement && !examSubmitted) {
+            if (!document.fullscreenElement && !examSubmitted && !isLocked) {
                 addViolation("Keluar Fullscreen");
                 setTimeout(enforceFullscreen, 100);
             }
         });
+        
         setTimeout(enforceFullscreen, 1000);
-
         setInterval(() => {
-            navigator.clipboard.writeText("").catch(()=>{});
-        }, 300);
+            if (!isLocked) enforceFullscreen();
+        }, 3000);
 
-        // Anti screen recording: flash overlay (interval 8 detik, sangat halus)
+        // Clear clipboard periodically
+        setInterval(() => {
+            try { navigator.clipboard.writeText(""); } catch(e) {}
+        }, 200);
+
+        // Anti screen recording flash
         setInterval(() => {
             const flash = document.getElementById("flash-overlay");
-            flash.style.opacity = "0.08";
-            setTimeout(() => flash.style.opacity = "0", 80);
-        }, 8000);
+            flash.style.opacity = "0.12";
+            setTimeout(() => flash.style.opacity = "0", 60);
+        }, 5000);
 
+        // DevTools detection via window size
         setInterval(() => {
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            const widthThreshold = window.outerWidth - window.innerWidth > 200;
+            const heightThreshold = window.outerHeight - window.innerHeight > 200;
             if (widthThreshold || heightThreshold) {
                 addViolation("DevTools terdeteksi (window size)");
             }
-        }, 1000);
+        }, 800);
 
-        setInterval(() => {
+        // Debugger trap - multiple layers
+        function debuggerTrap() {
+            if (isLocked || examSubmitted) return;
             const start = performance.now();
             debugger;
             const end = performance.now();
             if (end - start > 100) {
                 addViolation("Debugger terdeteksi");
             }
+        }
+        setInterval(debuggerTrap, 1500);
+        
+        // Additional debugger trap with Function constructor
+        setInterval(() => {
+            if (isLocked || examSubmitted) return;
+            try {
+                const fn = new Function("debugger");
+                fn();
+            } catch(e) {}
         }, 2000);
+
+        // Console detection
+        setInterval(() => {
+            if (isLocked || examSubmitted) return;
+            const element = new Image();
+            Object.defineProperty(element, 'id', {
+                get: function() {
+                    addViolation("Console terdeteksi");
+                    return "";
+                }
+            });
+            console.log(element);
+        }, 3000);
+
+        // Disable console methods
+        console.log = function() {};
+        console.warn = function() {};
+        console.error = function() {};
+        console.info = function() {};
+        console.debug = function() {};
     }
 
     function addViolation(reason) {
-        if (examSubmitted) return;
+        if (examSubmitted || isLocked) return;
         violations++;
         document.getElementById("violation-count").textContent = "Pelanggaran: " + violations + "/" + MAX_VIOLATIONS;
         document.getElementById("violation-count").classList.add("active");
@@ -836,6 +991,7 @@
         if (violations >= MAX_VIOLATIONS) {
             document.getElementById("security-btn").textContent = "Ujian Dikunci";
             document.getElementById("security-btn").disabled = true;
+            setTimeout(lockExam, 500);
         }
     }
 
