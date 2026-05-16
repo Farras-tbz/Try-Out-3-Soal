@@ -3,1234 +3,844 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelatihan Intensif @wrosn26</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>CBT Try Out 1 - Olimpiade Kombinatorika</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [["$", "$"], ["\\(", "\\)"]],
+                displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
+            }
+        };
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --sky-blue: #87CEEB;
-            --light-sky: #B0E0E6;
-            --deep-sky: #00BFFF;
-            --white: #FFFFFF;
-            --cloud-white: rgba(255, 255, 255, 0.9);
-            --text-dark: #2C3E50;
-            --accent-orange: #FF6B6B;
-            --accent-yellow: #FFE66D;
-            --success-green: #4ECDC4;
-            --neon-purple: #9b59b6;
-            --hot-pink: #e74c3c;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
         body {
-            font-family: 'Nunito', 'Poppins', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(180deg, 
-                #87CEEB 0%, 
-                #98D8E8 30%,
-                #B0E0E6 60%,
-                #E0F6FF 100%);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
             overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Animated Clouds Background */
-        .clouds-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .cloud {
-            position: absolute;
-            background: var(--cloud-white);
-            border-radius: 100px;
-            opacity: 0.8;
-            filter: blur(1px);
-        }
-
-        .cloud::before {
-            content: '';
-            position: absolute;
-            background: var(--cloud-white);
-            border-radius: 100px;
-        }
-
-        .cloud::after {
-            content: '';
-            position: absolute;
-            background: var(--cloud-white);
-            border-radius: 100px;
-        }
-
-        .cloud1 {
-            width: 200px;
-            height: 60px;
-            top: 15%;
-            left: -200px;
-            animation: floatCloud 25s infinite linear;
-        }
-
-        .cloud1::before {
-            width: 100px;
-            height: 80px;
-            top: -40px;
-            left: 20px;
-        }
-
-        .cloud1::after {
-            width: 120px;
-            height: 60px;
-            top: -20px;
-            left: 80px;
-        }
-
-        .cloud2 {
-            width: 160px;
-            height: 50px;
-            top: 35%;
-            left: -160px;
-            animation: floatCloud 20s infinite linear;
-            animation-delay: 5s;
-        }
-
-        .cloud2::before {
-            width: 80px;
-            height: 60px;
-            top: -30px;
-            left: 15px;
-        }
-
-        .cloud2::after {
-            width: 100px;
-            height: 50px;
-            top: -15px;
-            left: 60px;
-        }
-
-        .cloud3 {
-            width: 120px;
-            height: 40px;
-            top: 60%;
-            left: -120px;
-            animation: floatCloud 15s infinite linear;
-            animation-delay: 10s;
-        }
-
-        .cloud3::before {
-            width: 60px;
-            height: 50px;
-            top: -25px;
-            left: 10px;
-        }
-
-        .cloud3::after {
-            width: 80px;
-            height: 40px;
-            top: -10px;
-            left: 45px;
-        }
-
-        .cloud4 {
-            width: 180px;
-            height: 55px;
-            top: 8%;
-            left: -180px;
-            animation: floatCloud 30s infinite linear;
-            animation-delay: 12s;
-        }
-
-        .cloud4::before {
-            width: 90px;
-            height: 70px;
-            top: -35px;
-            left: 18px;
-        }
-
-        .cloud4::after {
-            width: 110px;
-            height: 55px;
-            top: -18px;
-            left: 70px;
-        }
-
-        .cloud5 {
-            width: 140px;
-            height: 45px;
-            top: 75%;
-            left: -140px;
-            animation: floatCloud 22s infinite linear;
-            animation-delay: 3s;
-        }
-
-        .cloud5::before {
-            width: 70px;
-            height: 55px;
-            top: -28px;
-            left: 12px;
-        }
-
-        .cloud5::after {
-            width: 90px;
-            height: 45px;
-            top: -12px;
-            left: 55px;
-        }
-
-        @keyframes floatCloud {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(calc(100vw + 300px));
-            }
-        }
-
-        @keyframes gentleFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes urgentPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4); }
-            50% { transform: scale(1.02); box-shadow: 0 8px 30px rgba(255, 107, 107, 0.6); }
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(78, 205, 196, 0.4); }
-            50% { box-shadow: 0 0 40px rgba(78, 205, 196, 0.8); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-
-        /* Main Container */
-        .main-container {
-            position: relative;
-            z-index: 10;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
         }
-
-        /* Header Section */
-        .header-section {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: gentleFloat 3s ease-in-out infinite;
-        }
-
-        .main-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.8em;
-            font-weight: 800;
-            color: var(--text-dark);
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #2C3E50 0%, #3498DB 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .subtitle {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--deep-sky);
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-
-        .handle {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: var(--accent-orange);
-            display: inline-block;
-            padding: 8px 20px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 25px;
-            backdrop-filter: blur(10px);
-        }
-
-        /* URGENCY BANNER */
-        .urgency-banner {
-            width: 100%;
-            max-width: 800px;
-            background: linear-gradient(135deg, #FF6B6B, #ee5a5a);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            text-align: center;
-            margin-bottom: 25px;
-            font-weight: 700;
-            animation: urgentPulse 2s infinite;
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            font-size: 0.95em;
-        }
-
-        /* SOCIAL PROOF BAR */
-        .social-proof-bar {
-            width: 100%;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(78, 205, 196, 0.3);
-            border-radius: 20px;
-            padding: 15px 25px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .social-proof-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9em;
-            color: var(--text-dark);
-        }
-
-        .social-proof-item i {
-            color: var(--success-green);
-            font-size: 1.3em;
-        }
-
-        .social-proof-item strong {
-            color: var(--accent-orange);
-            font-size: 1.1em;
-        }
-
-        /* Pricing Section */
-        .pricing-section {
-            width: 100%;
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            margin-bottom: 30px;
-        }
-
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .pricing-header h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2em;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .pricing-header i {
-            color: var(--accent-orange);
-        }
-
-        .pricing-subtitle {
-            color: #666;
-            font-size: 1em;
-        }
-
-        /* Section Labels */
-        .section-label {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-orange), #ff8e53);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 0.9em;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        }
-
-        /* Price Grid Layout */
-        .price-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        /* Price Cards */
-        .price-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.95));
-            border-radius: 20px;
-            padding: 25px;
-            border: 2px solid transparent;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .price-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-            transition: left 0.6s;
-        }
-
-        .price-card:hover::before {
-            left: 100%;
-        }
-
-        .price-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 191, 255, 0.2);
-            border-color: var(--deep-sky);
-        }
-
-        /* POPULAR Badge */
-        .price-card.popular {
-            background: linear-gradient(135deg, rgba(155, 89, 182, 0.15), rgba(255, 255, 255, 0.95));
-            border: 3px solid var(--neon-purple);
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(155, 89, 182, 0.3);
-        }
-
-        .price-card.popular::after {
-            content: '🔥 PALING LARIS';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--neon-purple), #8e44ad);
-            color: white;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 800;
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
-            white-space: nowrap;
-        }
-
-        /* BEST VALUE Badge */
-        .price-card.best-value {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(255, 255, 255, 0.95));
-            border: 3px solid var(--hot-pink);
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.3);
-        }
-
-        .price-card.best-value::after {
-            content: '💎 BEST VALUE';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--hot-pink), #c0392b);
-            color: white;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 800;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
-            white-space: nowrap;
-            animation: glow 2s infinite;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            color: white;
-        }
-
-        .card-icon.basic { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .card-icon.popular { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .card-icon.best { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-
-        .card-title {
-            font-weight: 800;
-            font-size: 1.2em;
-            color: var(--text-dark);
-        }
-
-        .card-subtitle {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        /* Price Display */
-        .price-display {
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.03);
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 1em;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .current-price {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2em;
-            font-weight: 800;
-            color: var(--accent-orange);
-            line-height: 1;
-        }
-
-        .price-card.popular .current-price {
-            color: var(--neon-purple);
-        }
-
-        .price-card.best-value .current-price {
-            color: var(--hot-pink);
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .price-period {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        /* Savings Badge */
-        .savings-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(78, 205, 196, 0.1));
-            color: #16a085;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 700;
-            margin-bottom: 15px;
-            border: 1px solid rgba(78, 205, 196, 0.3);
-        }
-
-        .price-card.best-value .savings-badge {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(231, 76, 60, 0.1));
-            color: #c0392b;
-            border-color: rgba(231, 76, 60, 0.3);
-            font-size: 0.9em;
-        }
-
-        /* Features List */
-        .features-list {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .features-list li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-            font-size: 0.9em;
-            color: #555;
-            border-bottom: 1px dashed rgba(0,0,0,0.1);
-        }
-
-        .features-list li:last-child {
-            border-bottom: none;
-        }
-
-        .features-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--success-green);
+        .watermark {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.08;
+            font-size: 24px;
             font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        /* CTA Button */
-        .cta-button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 15px;
-            font-weight: 700;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #fff;
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            align-content: space-around;
+            justify-content: space-around;
+            overflow: hidden;
+        }
+        .watermark span { transform: rotate(-30deg); white-space: nowrap; margin: 40px; }
+        #security-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
             justify-content: center;
-            gap: 10px;
-        }
-
-        .cta-button.basic {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-        }
-
-        .cta-button.popular {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-            box-shadow: 0 5px 20px rgba(155, 89, 182, 0.4);
-            animation: glow 2s infinite;
-        }
-
-        .cta-button.best {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Comparison Table */
-        .comparison-box {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 2px solid rgba(78, 205, 196, 0.2);
-        }
-
-        .comparison-title {
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.1em;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
         }
-
-        .comparison-title i {
-            color: var(--success-green);
-        }
-
-        .comparison-row {
+        #security-overlay.active { display: flex; }
+        #security-overlay h2 { color: #e74c3c; font-size: 28px; margin-bottom: 20px; }
+        #security-overlay p { color: #ecf0f1; font-size: 16px; margin-bottom: 30px; }
+        .btn { background: #e74c3c; color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 8px; cursor: pointer; }
+        .btn:hover { background: #c0392b; }
+        header {
+            background: rgba(0,0,0,0.3);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            font-size: 0.95em;
+            border-bottom: 2px solid #e74c3c;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
-        .comparison-row:last-child {
-            border-bottom: none;
-            font-weight: 700;
-            color: var(--hot-pink);
-            font-size: 1.1em;
-            background: linear-gradient(90deg, rgba(231, 76, 60, 0.1), transparent);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-
-        /* Guarantee Box */
-        .guarantee-box {
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(46, 204, 113, 0.1));
-            border: 2px solid rgba(78, 205, 196, 0.3);
-            border-radius: 20px;
+        .timer { font-size: 24px; font-weight: bold; color: #e74c3c; font-family: monospace; }
+        .timer.warning { color: #f39c12; animation: pulse 1s infinite; }
+        .timer.danger { color: #e74c3c; animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .user-info { font-size: 14px; color: #bdc3c7; }
+        main { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .question-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
             padding: 25px;
-            display: flex;
-            align-items: start;
-            gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .guarantee-icon {
-            font-size: 2.5em;
+        .question-number {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .question-text { font-size: 18px; line-height: 1.6; margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option {
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .option:hover { background: rgba(255,255,255,0.15); border-color: #3498db; }
+        .option.selected { background: rgba(52, 152, 219, 0.3); border-color: #3498db; }
+        .option-letter {
+            background: rgba(255,255,255,0.1);
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
             flex-shrink: 0;
         }
-
-        .guarantee-content h4 {
-            font-weight: 700;
-            color: #16a085;
-            margin-bottom: 5px;
-            font-size: 1.1em;
-        }
-
-        .guarantee-content p {
-            font-size: 0.9em;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        /* Scarcity Box */
-        .scarcity-box {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
-            border: 2px solid rgba(231, 76, 60, 0.2);
-            border-radius: 15px;
-            padding: 15px 20px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .scarcity-box p {
-            color: #c0392b;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-
-        .scarcity-box strong {
-            font-size: 1.2em;
-        }
-
-        /* Note Section */
-        .note-section {
-            margin-top: 25px;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(255, 230, 109, 0.2), rgba(255, 215, 0, 0.1));
-            border-left: 5px solid var(--accent-yellow);
-            border-radius: 15px;
-            font-size: 0.95em;
-            color: var(--text-dark);
-            line-height: 1.8;
-        }
-
-        .note-section strong {
-            color: var(--accent-orange);
-        }
-
-        /* Payment Section */
-        .payment-section {
-            text-align: center;
+        .option.selected .option-letter { background: #3498db; }
+        .input-answer {
             width: 100%;
-            max-width: 800px;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            outline: none;
         }
-
-        .payment-title {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 20px;
+        .input-answer:focus { border-color: #3498db; }
+        .nav-buttons {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .payment-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .payment-btn {
-            width: 90px;
-            height: 90px;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            border: 3px solid white;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-        }
-
-        .payment-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .payment-btn:hover::before {
-            opacity: 1;
-        }
-
-        .payment-btn:hover {
-            transform: translateY(-10px) scale(1.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .payment-btn.ovo {
-            background: linear-gradient(135deg, #4c3494, #6b5ce7);
-        }
-
-        .payment-btn.dana {
-            background: linear-gradient(135deg, #008ceb, #00a8ff);
-        }
-
-        .payment-btn.gopay {
-            background: linear-gradient(135deg, #00aec5, #00d4e0);
-        }
-
-        .payment-btn span {
-            color: white;
-            font-weight: 700;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        /* WhatsApp Section - ENHANCED */
-        .whatsapp-section {
-            margin-top: 20px;
-        }
-
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
+            justify-content: space-between;
+            margin-top: 30px;
             gap: 15px;
-            padding: 20px 50px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1.3em;
-            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.5);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            animation: glow 2s infinite;
         }
-
-        .whatsapp-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-
-        .whatsapp-btn:hover::before {
-            left: 100%;
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-prev { background: rgba(255,255,255,0.1); color: #fff; }
+        .btn-prev:hover:not(:disabled) { background: rgba(255,255,255,0.2); }
+        .btn-next { background: #3498db; color: #fff; }
+        .btn-next:hover:not(:disabled) { background: #2980b9; }
+        .btn-submit { background: #e74c3c; color: #fff; }
+        .btn-submit:hover { background: #c0392b; }
+        .question-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+            justify-content: center;
         }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 50px rgba(37, 211, 102, 0.7);
+        .q-nav-btn {
+            width: 40px; height: 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
         }
-
-        .whatsapp-btn i {
-            font-size: 1.8em;
-        }
-
-        .whatsapp-subtext {
+        .q-nav-btn:hover { border-color: #3498db; }
+        .q-nav-btn.answered { background: #27ae60; border-color: #27ae60; }
+        .q-nav-btn.current { background: #3498db; border-color: #3498db; }
+        .q-nav-btn.flagged { border-color: #f39c12; }
+        .flag-btn {
+            background: rgba(243, 156, 18, 0.2);
+            border: 1px solid #f39c12;
+            color: #f39c12;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
             margin-top: 15px;
-            font-size: 0.9em;
-            color: #666;
+            font-size: 14px;
         }
-
-        /* Sun Decoration */
-        .sun {
+        .flag-btn.flagged { background: #f39c12; color: #fff; }
+        #result-modal {
+            display: none;
             position: fixed;
-            top: 50px;
-            right: 50px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #FFD700 0%, #FFA500 70%);
-            border-radius: 50%;
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
-            animation: sunPulse 4s ease-in-out infinite;
-            z-index: 5;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
-
-        @keyframes sunPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 60px rgba(255, 215, 0, 0.6); }
-            50% { transform: scale(1.1); box-shadow: 0 0 80px rgba(255, 215, 0, 0.8); }
+        #result-modal.active { display: flex; }
+        .result-box {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid #e74c3c;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
         }
-
-        /* Birds */
-        .bird {
+        .result-box h2 { color: #e74c3c; margin-bottom: 20px; font-size: 28px; }
+        .score { font-size: 64px; font-weight: bold; color: #f39c12; margin: 20px 0; }
+        .result-detail { color: #bdc3c7; margin-bottom: 20px; line-height: 1.8; }
+        #access-denied {
+            display: none;
             position: fixed;
-            z-index: 5;
-            opacity: 0.6;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a1a2e;
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
         }
-
-        .bird1 {
-            top: 20%;
-            animation: flyBird 20s infinite linear;
-        }
-
-        .bird2 {
-            top: 30%;
-            animation: flyBird 25s infinite linear;
-            animation-delay: 5s;
-        }
-
-        @keyframes flyBird {
-            0% { left: -50px; }
-            100% { left: calc(100% + 50px); }
-        }
-
-        /* Sparkle Animation */
-        .sparkle {
+        #access-denied.active { display: flex; }
+        .flash-overlay {
             position: fixed;
-            width: 4px;
-            height: 4px;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: white;
-            border-radius: 50%;
-            animation: sparkle 3s infinite;
-            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9997;
+            transition: opacity 0.1s;
         }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
+        .violation-count {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 101;
+            display: none;
         }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-title {
-                font-size: 2em;
-            }
-            
-            .subtitle {
-                font-size: 1em;
-            }
-
-            .urgency-banner {
-                font-size: 0.85em;
-                padding: 12px 15px;
-            }
-
-            .social-proof-bar {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .pricing-section {
-                padding: 25px;
-            }
-
-            .price-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .price-card.popular,
-            .price-card.best-value {
-                transform: scale(1);
-            }
-
-            .guarantee-box {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .payment-btn {
-                width: 80px;
-                height: 80px;
-            }
-
-            .whatsapp-btn {
-                padding: 15px 30px;
-                font-size: 1.1em;
-            }
-            
-            .sun {
-                width: 60px;
-                height: 60px;
-                top: 20px;
-                right: 20px;
-            }
+        .violation-count.active { display: block; }
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
         }
+        .type-pg { background: #3498db; }
+        .type-isian { background: #9b59b6; }
     </style>
+<base target="_blank">
 </head>
 <body>
-    <!-- Background Elements -->
-    <div class="clouds-container">
-        <div class="cloud cloud1"></div>
-        <div class="cloud cloud2"></div>
-        <div class="cloud cloud3"></div>
-        <div class="cloud cloud4"></div>
-        <div class="cloud cloud5"></div>
+    <div class="watermark" id="watermark"></div>
+    <div class="flash-overlay" id="flash-overlay"></div>
+    <div class="violation-count" id="violation-count">Pelanggaran: 0/2</div>
+
+    <div id="access-denied">
+        <h1 style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">&#9888; Akses Ditolak</h1>
+        <p style="color: #bdc3c7; font-size: 18px; max-width: 600px;">
+            Anda harus login melalui halaman utama terlebih dahulu.<br>
+            Token tidak valid atau sudah expired.
+        </p>
+        <button class="btn" style="margin-top: 30px;" onclick="window.location.href='https://farras-tbz.github.io/SOAL-TRY-OUT-1/'">
+            Kembali ke Halaman Login
+        </button>
     </div>
 
-    <div class="sun"></div>
-
-    <!-- Birds using Font Awesome -->
-    <div class="bird bird1">
-        <i class="fas fa-dove" style="color: white; font-size: 1.5em; transform: scaleX(-1);"></i>
-    </div>
-    <div class="bird bird2">
-        <i class="fas fa-crow" style="color: rgba(255,255,255,0.7); font-size: 1.2em; transform: scaleX(-1);"></i>
+    <div id="security-overlay">
+        <h2>&#9888; Pelanggaran Keamanan Terdeteksi!</h2>
+        <p id="security-msg">Anda melakukan pelanggaran. Ujian akan dikunci setelah 2 kali pelanggaran.</p>
+        <p id="security-count">Pelanggaran: <span id="v-count">0</span>/2</p>
+        <button class="btn" id="security-btn" onclick="dismissSecurity()">Saya Mengerti</button>
     </div>
 
-    <!-- Sparkles -->
-    <div class="sparkle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-    <div class="sparkle" style="top: 40%; left: 80%; animation-delay: 1s;"></div>
-    <div class="sparkle" style="top: 60%; left: 30%; animation-delay: 2s;"></div>
-    <div class="sparkle" style="top: 80%; left: 70%; animation-delay: 0.5s;"></div>
-    <div class="sparkle" style="top: 30%; left: 50%; animation-delay: 1.5s;"></div>
-
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Header -->
-        <div class="header-section">
-            <h1 class="main-title">PELATIHAN INTENSIF<br>OSN Matematika 2026</h1>
-            <div class="subtitle">Program Eksklusif Persiapan OSN</div>
-            <div class="handle">@wrosn26</div>
-        </div>
-
-        <!-- URGENCY BANNER -->
-        <div class="urgency-banner">
-            <i class="fas fa-fire"></i>
-            <span>🔥 PROMO TERBATAS: Harga Spesial Batch Maret 2026!</span>
-            <i class="fas fa-fire"></i>
-        </div>
-
-        <!-- Pricing Section -->
-        <div class="pricing-section">
-            <div class="pricing-header">
-                <h2><i class="fas fa-crown"></i> Pilih Paket Belajarmu</h2>
-                <p class="pricing-subtitle">Investasi terbaik untuk meraih medali OSN 2026</p>
-            </div>
-
-            <!-- COMPARISON BOX -->
-            <div class="comparison-box">
-                <div class="comparison-title">
-                    <i class="fas fa-calculator"></i> Hitungan Cerdas: Paket Lengkap
-                </div>
-                <div class="comparison-row">
-                    <span>Pelatihan Intensif (1 bulan)</span>
-                    <span>Rp 35.000</span>
-                </div>
-                <div class="comparison-row">
-                    <span>5x Try Out (harga normal @Rp10.000)</span>
-                    <span>Rp 50.000</span>
-                </div>
-                <div class="comparison-row">
-                    <span>Total Nilai Sebenarnya</span>
-                    <span class="line-through">Rp 85.000</span>
-                </div>
-                <div class="comparison-row">
-                    <span><i class="fas fa-gift"></i> Harga Promo Spesial!</span>
-                    <span>Rp 60.000</span>
-                </div>
-                <div class="comparison-row">
-                    <span>💰 Kamu Hemat</span>
-                    <span>Rp 25.000 (29%)</span>
-                </div>
-            </div>
-
-            <!-- PRICE GRID -->
-            <div class="price-grid">
-                
-                <!-- BASIC -->
-                <div class="price-card">
-                    <div class="card-header">
-                        <div class="card-icon basic">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <div>
-                            <div class="card-title">Starter</div>
-                            <div class="card-subtitle">Fokus materi</div>
-                        </div>
-                    </div>
-                    <div class="price-display">
-                        <span class="original-price">Rp 40.000</span>
-                        <div class="current-price">Rp 35.000</div>
-                        <div class="price-period">per bulan</div>
-                    </div>
-                    <div class="savings-badge">
-                        <i class="fas fa-piggy-bank"></i> Hemat Rp 5.000
-                    </div>
-                    <ul class="features-list">
-                        <li>Akses materi lengkap</li>
-                        <li>Video pembelajaran</li>
-                        <li>Grup diskusi WhatsApp</li>
-                        <li>Latihan soal mingguan</li>
-                    </ul>
-                    <button class="cta-button basic" onclick="openWhatsApp()">
-                        <i class="fas fa-arrow-right"></i> Pilih Paket
-                    </button>
-                </div>
-
-                <!-- POPULAR -->
-                <div class="price-card popular">
-                    <div class="card-header">
-                        <div class="card-icon popular">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div>
-                            <div class="card-title">Champion</div>
-                            <div class="card-subtitle">Materi + 3x Try Out</div>
-                        </div>
-                    </div>
-                    <div class="price-display">
-                        <span class="original-price">Rp 65.000</span>
-                        <div class="current-price">Rp 50.000</div>
-                        <div class="price-period">per bulan</div>
-                    </div>
-                    <div class="savings-badge">
-                        <i class="fas fa-fire"></i> Hemat Rp 15.000 (23%)
-                    </div>
-                    <ul class="features-list">
-                        <li>Semua fitur Starter</li>
-                        <li>3x simulasi Try Out</li>
-                        <li>Feedback hasil TO detail</li>
-                        <li>Prioritas tanya jawab</li>
-                    </ul>
-                    <button class="cta-button popular" onclick="openWhatsApp()">
-                        <i class="fas fa-fire"></i> Paling Diminati!
-                    </button>
-                </div>
-
-                <!-- BEST VALUE -->
-                <div class="price-card best-value">
-                    <div class="card-header">
-                        <div class="card-icon best">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <div>
-                            <div class="card-title">Master</div>
-                            <div class="card-subtitle">Lengkap! Materi + 5x TO</div>
-                        </div>
-                    </div>
-                    <div class="price-display">
-                        <span class="original-price">Rp 85.000</span>
-                        <div class="current-price">Rp 60.000</div>
-                        <div class="price-period">per bulan</div>
-                    </div>
-                    <div class="savings-badge">
-                        <i class="fas fa-crown"></i> HEMAT TERBANYAK Rp 25.000!
-                    </div>
-                    <ul class="features-list">
-                        <li>Semua fitur Champion</li>
-                        <li>5x simulasi Try Out</li>
-                        <li>Sesi mentoring eksklusif</li>
-                        <li>Prediksi soal OSN 2026</li>
-                        <li>Template jawaban cepat</li>
-                    </ul>
-                    <button class="cta-button best" onclick="openWhatsApp()">
-                        <i class="fas fa-crown"></i> Ambil Paket Lengkap!
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- SCARCITY BOX -->
-            <div class="scarcity-box">
-                <p>⚡ <strong>7 slot tersisa</strong> untuk batch Maret 2026 • Daftar sekarang sebelum kehabisan!</p>
-            </div>
-
-            <!-- NOTE -->
-            <div class="note-section">
-                <strong>💡 Tips Hemat:</strong> Dengan paket combo, harga Try Out jadi cuma <strong>Rp 5.000/sesi</strong> (dari harga normal Rp 10.000). Lebih banyak latihan = lebih siap juara!
-            </div>
-        </div>
-
-        <!-- Payment Section -->
-        <div class="payment-section">
-            <div class="payment-title">
-                <i class="fas fa-wallet"></i> Pembayaran Mudah & Aman
-            </div>
-
-            <div class="payment-icons">
-                <a href="https://chat.whatsapp.com/Eo8LkcddMgG3oWKGc9F9CE" target="_blank" class="payment-btn ovo">
-                    <span>OVO</span>
-                </a>
-                <a href="https://chat.whatsapp.com/Eo8LkcddMgG3oWKGc9F9CE" target="_blank" class="payment-btn dana">
-                    <span>DANA</span>
-                </a>
-                <a href="https://chat.whatsapp.com/Eo8LkcddMgG3oWKGc9F9CE" target="_blank" class="payment-btn gopay">
-                    <span>GoPay</span>
-                </a>
-            </div>
-
-            <div class="whatsapp-section">
-                <a href="https://chat.whatsapp.com/Eo8LkcddMgG3oWKGc9F9CE" target="_blank" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>Daftar Sekarang!</span>
-                </a>
-                <p class="whatsapp-subtext">Klik untuk langsung chat di grup WhatsApp 👆</p>
-            </div>
+    <div id="result-modal">
+        <div class="result-box">
+            <h2>Try Out 1 Selesai!</h2>
+            <div class="score" id="final-score">0</div>
+            <div class="result-detail" id="result-detail"></div>
+            <button class="btn" onclick="finishExam()">Selesai</button>
         </div>
     </div>
+
+    <header id="main-header" style="display:none;">
+        <div>
+            <div style="font-size: 20px; font-weight: bold;">Try Out 1 - Kombinatorika</div>
+            <div class="user-info" id="user-info">Peserta: -</div>
+        </div>
+        <div class="timer" id="timer">02:00:00</div>
+    </header>
+
+    <main id="main-content" style="display:none;">
+        <div class="question-nav" id="question-nav"></div>
+        <div id="question-container"></div>
+        <div class="nav-buttons">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>Sebelumnya</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">Selanjutnya</button>
+            <button class="nav-btn btn-submit" id="btn-submit" onclick="submitExam()" style="display:none;">Kumpulkan</button>
+        </div>
+    </main>
 
     <script>
-        function openWhatsApp() {
-            window.open('https://chat.whatsapp.com/Eo8LkcddMgG3oWKGc9F9CE', '_blank');
+
+    // ==================== KONFIGURASI ====================
+    const EXAM_DURATION = 7200;
+    const MAX_VIOLATIONS = 2;
+    const TOKEN_EXPIRY = 5 * 60 * 1000;
+
+    // ==================== DATABASE SOAL (TERBARU) ====================
+    const questions = [
+        // === PILIHAN GANDA (1-10) ===
+        {
+            id: 1,
+            type: "pg",
+            question: "Tentukan banyaknya solusi berupa bilangan bulat positif $(x, y, z, w)$ yang memenuhi persamaan $x + y + z + w = 20$ dengan syarat tambahan bahwa $x \\le 5$.",
+            options: ["$484$", "$605$", "$720$", "$969$", "$364$"],
+            correct: 1
+        },
+        {
+            id: 2,
+            type: "pg",
+            question: "Banyaknya susunan atau permutasi dari semua huruf pada kata \"OLIMPIADE\" sedemikian sehingga tidak ada dua huruf vokal yang terletak berurutan (saling berdampingan) adalah...",
+            options: ["$2880$", "$1440$", "$720$", "$360$", "$120$"],
+            correct: 1
+        },
+        {
+            id: 3,
+            type: "pg",
+            question: "Diberikan sebuah himpunan $S = \\{1, 2, 3, \\dots, 10\\}$. Tentukan banyaknya himpunan bagian (subhimpunan) dari $S$ sedemikian sehingga jumlah dari seluruh anggota pada himpunan bagian tersebut merupakan bilangan genap. (Catatan: Himpunan kosong dianggap memiliki jumlah anggota $0$, yang merupakan bilangan genap).",
+            options: ["$256$", "$512$", "$1024$", "$100$", "$55$"],
+            correct: 1
+        },
+        {
+            id: 4,
+            type: "pg",
+            question: "Tentukan banyaknya cara menempatkan $8$ buah benteng (rook) yang identik pada papan catur standar berukuran $8 \\times 8$ sedemikian sehingga tidak ada dua benteng yang saling menyerang (artinya, tidak ada dua benteng yang menempati baris atau kolom yang sama).",
+            options: ["$8^8$", "$\\binom{64}{8}$", "$40320$", "$\\frac{64!}{56!}$", "$8^4$"],
+            correct: 2
+        },
+        {
+            id: 5,
+            type: "pg",
+            question: "Sebuah bilangan $5$ digit dikatakan palindrom jika bilangan tersebut bernilai sama saat dibaca dari kiri ke kanan maupun dari kanan ke kiri. Tentukan banyaknya bilangan palindrom $5$ digit yang habis dibagi oleh $9$.",
+            options: ["$90$", "$100$", "$110$", "$81$", "$120$"],
+            correct: 1
+        },
+        {
+            id: 6,
+            type: "pg",
+            question: "Sebuah turnamen catur menggunakan sistem setengah kompetisi, di mana setiap peserta bertanding melawan peserta lainnya tepat satu kali. Jika diketahui total pertandingan yang terjadi sepanjang turnamen tersebut adalah $45$ pertandingan, tentukan banyaknya jumlah peserta dalam turnamen tersebut.",
+            options: ["$9$", "$10$", "$11$", "$45$", "$90$"],
+            correct: 1
+        },
+        {
+            id: 7,
+            type: "pg",
+            question: "Diberikan himpunan $A = \\{1, 2, 3, 4, 5\\}$. Tentukan banyaknya pasangan terurut dari himpunan $(X, Y)$ yang memenuhi relasi bersarang $X \\subseteq Y \\subseteq A$.",
+            options: ["$125$", "$243$", "$3125$", "$32$", "$1024$"],
+            correct: 1
+        },
+        {
+            id: 8,
+            type: "pg",
+            question: "Diberikan sebuah kisi (grid) yang dibentuk oleh garis-garis horizontal dan vertikal berukuran $4 \\times 4$ persegi satuan. Tentukan total banyaknya persegi panjang (termasuk persegi) yang dapat dibentuk oleh garis-garis pada kisi tersebut.",
+            options: ["$16$", "$25$", "$100$", "$256$", "$30$"],
+            correct: 2
+        },
+        {
+            id: 9,
+            type: "pg",
+            question: "Misalkan $S = \\{1, 2, 3, \\dots, 50\\}$. Tentukan jumlah minimum elemen yang harus dipilih secara acak dari $S$ untuk menjamin bahwa selalu terdapat dua elemen yang terpilih yang selisihnya tepat $7$.",
+            options: ["$25$", "$26$", "$27$", "$28$", "$29$"],
+            correct: 4
+        },
+        {
+            id: 10,
+            type: "pg",
+            question: "Tentukan banyaknya string biner (terdiri dari angka $0$ atau $1$) dengan panjang $10$ digit yang memenuhi kondisi bahwa jumlah angka $1$ yang muncul di dalam string tersebut merupakan bilangan genap.",
+            options: ["$256$", "$512$", "$1024$", "$100$", "$55$"],
+            correct: 1
+        },
+        // === ISIAN SINGKAT (11-20) ===
+        {
+            id: 11,
+            type: "isian",
+            question: "Pada sebuah kompetisi matematika yang terdiri dari $20$ soal pilihan ganda, aturan penilaian ditetapkan sebagai berikut: skor $+4$ untuk setiap jawaban benar, skor $-1$ untuk setiap jawaban salah, dan skor $0$ untuk soal yang tidak dijawab. Tentukan banyaknya kemungkinan nilai total (skor akhir) berbeda yang dapat diperoleh oleh seorang peserta.",
+            answer: "95"
+        },
+        {
+            id: 12,
+            type: "isian",
+            question: "Diketahui terdapat $7$ buah titik yang terletak pada keliling sebuah lingkaran. Berapa banyak segitiga yang dapat dibentuk dengan menggunakan titik-titik tersebut sebagai titik sudutnya, dengan syarat tidak ada dua titik sudut segitiga yang letaknya berdekatan pada lingkaran?",
+            answer: "7"
+        },
+        {
+            id: 13,
+            type: "isian",
+            question: "Tentukan banyaknya cara menyusun seluruh huruf pada kata \"MATEMATIKA\" sedemikian sehingga semua huruf vokal muncul sesuai dengan urutan abjadnya (yaitu: A, kemudian A, kemudian A, kemudian E, dan terakhir I) jika dibaca dari kiri ke kanan (huruf-huruf vokal tersebut tidak harus saling berdampingan).",
+            answer: "7560"
+        },
+        {
+            id: 14,
+            type: "isian",
+            question: "Tentukan banyaknya permutasi dari himpunan $\\{1, 2, 3, 4, 5, 6\\}$ sedemikian sehingga angka $i$ tidak menempati posisi ke-$i$ untuk semua $1 \\le i \\le 4$. (Sedangkan angka $5$ dan $6$ bebas berada di posisi mana saja).",
+            answer: "362"
+        },
+        {
+            id: 15,
+            type: "isian",
+            question: "Sebuah robot berada pada titik asal $(0,0)$ dalam sistem koordinat Kartesius. Robot tersebut hanya dapat bergerak $1$ unit ke kanan atau $1$ unit ke atas pada setiap langkahnya. Tentukan banyaknya lintasan berbeda bagi robot tersebut untuk mencapai titik $(6,6)$ tanpa pernah melalui titik $(3,3)$.",
+            answer: "524"
+        },
+        {
+            id: 16,
+            type: "isian",
+            question: "Sebuah string biner sepanjang $10$ digit hanya terdiri dari karakter '0' atau '1'. Tentukan banyaknya string biner yang dapat dibentuk sedemikian sehingga tidak mengandung substring \"11\" (dua angka $1$ yang berdampingan).",
+            answer: "144"
+        },
+        {
+            id: 17,
+            type: "isian",
+            question: "Sebuah papan catur berukuran $3 \\times 3$ persegi satuan akan diwarnai menggunakan $3$ warna berbeda (merah, kuning, dan hijau). Tentukan banyaknya cara pewarnaan pada papan tersebut sedemikian sehingga setiap baris dan setiap kolom memuat tepat ketiga warna berbeda tersebut.",
+            answer: "12"
+        },
+        {
+            id: 18,
+            type: "isian",
+            question: "Misalkan kita memiliki sebuah papan catur berukuran $4 \\times 4$. Kita ingin menempatkan $4$ benteng identik pada papan tersebut sedemikian sehingga tidak ada dua benteng yang berada di baris atau kolom yang sama, serta tidak ada satu pun benteng yang terletak pada diagonal utama (diagonal dari pojok kiri atas ke pojok kanan bawah). Banyaknya cara penempatan yang memenuhi syarat tersebut adalah...",
+            answer: "9"
+        },
+        {
+            id: 19,
+            type: "isian",
+            question: "Tentukan banyaknya fungsi $f: \\{1, 2, 3, 4, 5\\} \\to \\{1, 2, 3, 4, 5\\}$ yang memenuhi syarat bahwa untuk setiap pasangan indeks $i, j \\in \\{1, 2, 3, 4, 5\\}$ dengan $i \\neq j$, nilai dari bentuk aljabar $f(i) \\cdot f(j) + i \\cdot j$ selalu berupa bilangan genap.",
+            answer: "108"
+        },
+        {
+            id: 20,
+            type: "isian",
+            question: "Sebuah partikel berada di posisi awal $x = 0$ pada garis bilangan bulat. Partikel tersebut bergerak sebanyak tepat $10$ langkah, di mana setiap langkahnya hanya dapat bergeser sejauh $+1$ atau $-1$. Tentukan banyaknya lintasan pergerakan partikel yang mungkin sedemikian sehingga posisi akhir partikel kembali berada di $x = 0$, dengan syarat partikel tersebut tidak pernah menyentuh ataupun melewati posisi $x = 3$ dan $x = -3$ di sepanjang perjalanannya.",
+            answer: "162"
+        }
+    ];
+
+    // ==================== STATE ====================
+    let currentQ = 0;
+    let answers = {};
+    let flagged = new Set();
+    let violations = 0;
+    let timeLeft = EXAM_DURATION;
+    let timerInterval;
+    let examSubmitted = false;
+    let userName = "";
+    let tokenValid = false;
+
+    // ==================== TOKEN VALIDATION ====================
+    function validateToken() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        console.log("=== CBT DEBUG TO1 ===");
+        console.log("Hostname:", window.location.hostname);
+        console.log("Path:", window.location.pathname);
+        console.log("Token from URL:", token ? "ADA" : "TIDAK ADA");
+
+        if (token) {
+            try {
+                const decoded = JSON.parse(atob(token));
+                console.log("Decoded token:", decoded);
+                if (decoded.n && decoded.t && (Date.now() - decoded.t) < TOKEN_EXPIRY) {
+                    userName = decoded.n;
+                    tokenValid = true;
+                    return true;
+                }
+            } catch (e) {
+                console.log("Token decode error:", e);
+            }
         }
 
-        // Add random sparkles
-        function createSparkle() {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.left = Math.random() * 100 + '%';
-            sparkle.style.top = Math.random() * 100 + '%';
-            sparkle.style.animationDelay = Math.random() * 3 + 's';
-            sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
-            document.body.appendChild(sparkle);
-            
-            setTimeout(() => {
-                sparkle.remove();
-            }, 5000);
+        const saved = localStorage.getItem("to1_token");
+        if (saved) {
+            try {
+                const decoded = JSON.parse(atob(saved));
+                if (decoded.n && decoded.t && (Date.now() - decoded.t) < TOKEN_EXPIRY) {
+                    userName = decoded.n;
+                    tokenValid = true;
+                    return true;
+                }
+            } catch (e) {}
         }
 
-        setInterval(createSparkle, 2000);
+        return false;
+    }
+
+    // ==================== INIT ====================
+    function init() {
+        if (!validateToken()) {
+            document.getElementById("access-denied").classList.add("active");
+            return;
+        }
+
+        document.getElementById("main-header").style.display = "flex";
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("user-info").textContent = "Peserta: " + userName;
+
+        const wm = document.getElementById("watermark");
+        for (let i = 0; i < 15; i++) {
+            const span = document.createElement("span");
+            span.textContent = userName + " | " + new Date().toLocaleString("id-ID");
+            wm.appendChild(span);
+        }
+
+        renderNav();
+        loadQuestion(0);
+        startTimer();
+        initSecurity();
+
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise();
+        }
+    }
+
+    // ==================== RENDER ====================
+    function renderNav() {
+        const nav = document.getElementById("question-nav");
+        nav.innerHTML = "";
+        questions.forEach((q, i) => {
+            const btn = document.createElement("button");
+            btn.className = "q-nav-btn";
+            btn.textContent = i + 1;
+            if (i === 0) btn.classList.add("current");
+            if (answers[q.id] !== undefined) btn.classList.add("answered");
+            if (flagged.has(q.id)) btn.classList.add("flagged");
+            btn.onclick = () => loadQuestion(i);
+            nav.appendChild(btn);
+        });
+    }
+
+    function loadQuestion(idx) {
+        currentQ = idx;
+        const q = questions[idx];
+        const container = document.getElementById("question-container");
+
+        let html = "<div class=\"question-box\">";
+        html += "<div class=\"question-number\">Soal " + q.id;
+        html += "<span class=\"type-badge " + (q.type === "pg" ? "type-pg" : "type-isian") + "\">";
+        html += (q.type === "pg" ? "Pilihan Ganda" : "Isian Singkat") + "</span></div>";
+        html += "<div class=\"question-text\">" + q.question + "</div>";
+
+        if (q.type === "pg") {
+            html += "<div class=\"options\">";
+            const letters = ["A", "B", "C", "D", "E"];
+            q.options.forEach((opt, i) => {
+                const selected = answers[q.id] === i ? "selected" : "";
+                html += "<div class=\"option " + selected + "\" onclick=\"selectOption(" + i + ")\">";
+                html += "<div class=\"option-letter\">" + letters[i] + "</div>";
+                html += "<div>" + opt + "</div></div>";
+            });
+            html += "</div>";
+        } else {
+            const val = answers[q.id] || "";
+            html += "<input type=\"text\" class=\"input-answer\" id=\"input-" + q.id + "\" ";
+            html += "value=\"" + val + "\" placeholder=\"Ketik jawaban Anda...\" ";
+            html += "oninput=\"saveInput(" + q.id + ", this.value)\">";
+        }
+
+        html += "<button class=\"flag-btn " + (flagged.has(q.id) ? "flagged" : "") + "\" ";
+        html += "onclick=\"toggleFlag(" + q.id + ")\">";
+        html += (flagged.has(q.id) ? "&#10003; Diberi Tanda" : "&#9873; Beri Tanda") + "</button>";
+        html += "</div>";
+
+        container.innerHTML = html;
+
+        document.querySelectorAll(".q-nav-btn").forEach((btn, i) => {
+            btn.classList.toggle("current", i === idx);
+        });
+
+        document.getElementById("btn-prev").disabled = idx === 0;
+        document.getElementById("btn-next").style.display = idx === questions.length - 1 ? "none" : "inline-block";
+        document.getElementById("btn-submit").style.display = idx === questions.length - 1 ? "inline-block" : "none";
+
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([container]);
+        }
+    }
+
+    function selectOption(optIdx) {
+        const q = questions[currentQ];
+        answers[q.id] = optIdx;
+        loadQuestion(currentQ);
+        updateNavAnswered(q.id);
+    }
+
+    function saveInput(qid, value) {
+        answers[qid] = value.trim();
+        updateNavAnswered(qid);
+    }
+
+    function updateNavAnswered(qid) {
+        const idx = questions.findIndex(q => q.id === qid);
+        const btn = document.querySelectorAll(".q-nav-btn")[idx];
+        if (btn) {
+            if (answers[qid] !== undefined && answers[qid] !== "") {
+                btn.classList.add("answered");
+            } else {
+                btn.classList.remove("answered");
+            }
+        }
+    }
+
+    function toggleFlag(qid) {
+        if (flagged.has(qid)) flagged.delete(qid);
+        else flagged.add(qid);
+        loadQuestion(currentQ);
+        renderNav();
+    }
+
+    function prevQuestion() {
+        if (currentQ > 0) loadQuestion(currentQ - 1);
+    }
+
+    function nextQuestion() {
+        if (currentQ < questions.length - 1) loadQuestion(currentQ + 1);
+    }
+
+    // ==================== TIMER ====================
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitExam(true);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const h = Math.floor(timeLeft / 3600);
+        const m = Math.floor((timeLeft % 3600) / 60);
+        const s = timeLeft % 60;
+        const timer = document.getElementById("timer");
+        timer.textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+
+        timer.classList.remove("warning", "danger");
+        if (timeLeft < 300) timer.classList.add("danger");
+        else if (timeLeft < 900) timer.classList.add("warning");
+    }
+
+    // ==================== SUBMIT ====================
+    function submitExam(auto = false) {
+        if (examSubmitted) return;
+        if (!auto && !confirm("Yakin ingin mengumpulkan jawaban?")) return;
+
+        examSubmitted = true;
+        clearInterval(timerInterval);
+
+        let correct = 0;
+        let answered = 0;
+        questions.forEach(q => {
+            if (answers[q.id] !== undefined && answers[q.id] !== "") {
+                answered++;
+                if (q.type === "pg") {
+                    if (answers[q.id] === q.correct) correct++;
+                } else {
+                    const userAns = String(answers[q.id]).toLowerCase().replace(/\s/g, "");
+                    const correctAns = String(q.answer).toLowerCase().replace(/\s/g, "");
+                    if (userAns === correctAns) correct++;
+                }
+            }
+        });
+
+        const score = correct * 5;
+        document.getElementById("final-score").textContent = score;
+        document.getElementById("result-detail").innerHTML = 
+            "Benar: " + correct + " dari " + questions.length + " soal<br>" +
+            "Dijawab: " + answered + " soal<br>" +
+            "Pelanggaran: " + violations + " kali<br>" +
+            "Sisa waktu: " + document.getElementById("timer").textContent;
+        document.getElementById("result-modal").classList.add("active");
+
+        const result = {
+            name: userName,
+            score: score,
+            correct: correct,
+            total: questions.length,
+            answered: answered,
+            violations: violations,
+            timeLeft: timeLeft,
+            timestamp: Date.now(),
+            answers: answers
+        };
+        localStorage.setItem("to1_results", JSON.stringify(result));
+        console.log("Result saved:", result);
+    }
+
+    function finishExam() {
+        document.getElementById("result-modal").classList.remove("active");
+        document.getElementById("main-content").innerHTML = 
+            "<div style=\"text-align:center;padding:50px;\">" +
+            "<h2 style=\"color:#27ae60;\">Ujian Selesai</h2>" +
+            "<p style=\"color:#bdc3c7;margin-top:20px;\">Terima kasih telah mengikuti Try Out 1.</p>" +
+            "<p style=\"color:#bdc3c7;\">Hasil telah tersimpan. Silakan tutup browser.</p>" +
+            "</div>";
+        document.getElementById("main-header").style.display = "none";
+    }
+
+    function dismissSecurity() {
+        document.getElementById("security-overlay").classList.remove("active");
+        if (violations >= MAX_VIOLATIONS) {
+            submitExam(true);
+        }
+    }
+
+    // ==================== SECURITY ====================
+    function initSecurity() {
+        document.addEventListener("contextmenu", e => {
+            e.preventDefault();
+            addViolation("Klik kanan (Right Click)");
+        });
+
+        document.addEventListener("copy", e => {
+            e.preventDefault();
+            addViolation("Copy (Ctrl+C)");
+        });
+        document.addEventListener("paste", e => {
+            e.preventDefault();
+            addViolation("Paste (Ctrl+V)");
+        });
+        document.addEventListener("cut", e => {
+            e.preventDefault();
+            addViolation("Cut (Ctrl+X)");
+        });
+
+        document.addEventListener("keydown", e => {
+            const key = e.key.toLowerCase();
+            const ctrl = e.ctrlKey || e.metaKey;
+
+            if (key === "printscreen" || key === "snapshot") {
+                e.preventDefault();
+                addViolation("PrintScreen");
+                navigator.clipboard.writeText("").catch(()=>{});
+            }
+
+            if (ctrl) {
+                const blocked = ["c", "v", "x", "p", "s", "a", "u"];
+                if (blocked.includes(key)) {
+                    e.preventDefault();
+                    addViolation("Ctrl+" + key.toUpperCase());
+                }
+                if (key === "shift" && (e.key === "i" || e.key === "j" || e.key === "c")) {
+                    e.preventDefault();
+                    addViolation("DevTools shortcut");
+                }
+            }
+
+            if (key === "f12") {
+                e.preventDefault();
+                addViolation("F12 (DevTools)");
+            }
+        });
+
+        let blurCount = 0;
+        window.addEventListener("blur", () => {
+            blurCount++;
+            if (blurCount > 1) {
+                addViolation("Pindah tab/jendela (Alt+Tab)");
+            }
+        });
+
+        window.addEventListener("beforeunload", e => {
+            if (!examSubmitted) {
+                e.preventDefault();
+                e.returnValue = "Ujian sedang berlangsung. Yakin ingin keluar?";
+                return e.returnValue;
+            }
+        });
+
+        function enforceFullscreen() {
+            if (!document.fullscreenElement && !examSubmitted) {
+                try {
+                    document.documentElement.requestFullscreen();
+                } catch(e) {}
+            }
+        }
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement && !examSubmitted) {
+                addViolation("Keluar Fullscreen");
+                setTimeout(enforceFullscreen, 100);
+            }
+        });
+        setTimeout(enforceFullscreen, 1000);
+
+        setInterval(() => {
+            navigator.clipboard.writeText("").catch(()=>{});
+        }, 300);
+
+        // Anti screen recording: flash overlay (interval 8 detik, sangat halus)
+        setInterval(() => {
+            const flash = document.getElementById("flash-overlay");
+            flash.style.opacity = "0.08";
+            setTimeout(() => flash.style.opacity = "0", 80);
+        }, 8000);
+
+        setInterval(() => {
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                addViolation("DevTools terdeteksi (window size)");
+            }
+        }, 1000);
+
+        setInterval(() => {
+            const start = performance.now();
+            debugger;
+            const end = performance.now();
+            if (end - start > 100) {
+                addViolation("Debugger terdeteksi");
+            }
+        }, 2000);
+    }
+
+    function addViolation(reason) {
+        if (examSubmitted) return;
+        violations++;
+        document.getElementById("violation-count").textContent = "Pelanggaran: " + violations + "/" + MAX_VIOLATIONS;
+        document.getElementById("violation-count").classList.add("active");
+        document.getElementById("v-count").textContent = violations;
+        document.getElementById("security-msg").textContent = "Pelanggaran: " + reason;
+        document.getElementById("security-overlay").classList.add("active");
+
+        if (violations >= MAX_VIOLATIONS) {
+            document.getElementById("security-btn").textContent = "Ujian Dikunci";
+            document.getElementById("security-btn").disabled = true;
+        }
+    }
+
+    window.onload = init;
+
     </script>
 </body>
 </html>
